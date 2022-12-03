@@ -4,4 +4,13 @@
     <style name="Theme.BookApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorSecundary2</item>
     </style>
+
+    <style name="Theme.BookApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.BookApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.BookApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
