@@ -47,11 +47,6 @@ fun MainScreen() {
         }
     }
 
-    fun goToLogin(mContext : Context) {
-
-    }
-
-
 }
 
 @Preview(showBackground = true)
