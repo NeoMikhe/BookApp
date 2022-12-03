@@ -5,7 +5,8 @@ import java.io.File
 
 data class User(
     val user: UserX,
-    val message: String
+    val message: String,
+    val error : String
 )
 
 data class UserX(
@@ -16,9 +17,18 @@ data class UserX(
     val token: String
 )
 
-data class UserPost(
+data class UserLogin(
     val email: String,
     val password: String
+)
+
+data class UserRegister(
+    val name: String,
+    val first_ln: String,
+    val second_ln: String,
+    val email: String,
+    val password: String,
+    val image: File?
 )
 
 data class LibroPost(

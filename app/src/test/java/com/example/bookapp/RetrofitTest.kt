@@ -1,9 +1,6 @@
 package com.example.bookapp
 
-import com.example.bookapp.models.LibroPost
-import com.example.bookapp.models.PostComentario
-import com.example.bookapp.models.PostResena
-import com.example.bookapp.models.UserPost
+import com.example.bookapp.models.*
 import com.example.bookapp.network.RetrofitClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -16,16 +13,36 @@ import java.io.File
 class RetrofitTest {
 
     //Cambiar token para tests cada hora
-    val authToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3MDAzMjkzMywiZXhwIjoxNjcwMDM2NTMzfQ.rJiwyEe3ShdPl-oJQmI4M2-xxSr_x4ybBZyzKK3kMmY"
+    val authToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3MDA1NDAyNCwiZXhwIjoxNjcwMDU3NjI0fQ.JJJKtL9J_AvM3gG-a6MSgXtSO40P_caoycZ6DmFclUE"
 
     //Tests de Usuarios
     @Test
     fun login() {
         val api = RetrofitClient.getApi();
-        val user = UserPost("jordan@gmail.com","12345678")
-        val call = api.LoginUser(user)
+        val user = UserLogin("jordan@gmail.com","12345678")
+        val call = api.loginUser(user)
         val response = call.execute();
         assertTrue(response.isSuccessful);
+
+    }
+
+    @Test
+    fun register() {
+        val api = RetrofitClient.getApi();
+        val user = UserRegister("jordan", "higuera", "higuera", "jordan@email.com", "12345678", null)
+        val name = MultipartBody.Part.createFormData("name", user.name)
+        val first_ln = MultipartBody.Part.createFormData("first_ln", user.first_ln)
+        val second_ln = MultipartBody.Part.createFormData("name", user.second_ln)
+        val email = MultipartBody.Part.createFormData("name", user.email)
+        val password = MultipartBody.Part.createFormData("name", user.password)
+
+
+        val call = api.registerUser(name, first_ln, second_ln, email, password, null);
+
+        val response = call.execute();
+
+        assertTrue(response.isSuccessful)
+
 
     }
 
@@ -36,14 +53,14 @@ class RetrofitTest {
         val api = RetrofitClient.getApi();
         val uri = File("C:\\Users\\jorda\\AndroidStudioProjects\\appproyectofinal\\app\\src\\test\\java\\mx\\uabcs\\appproyectofinal\\A.jpeg");
         val libro = LibroPost("Jordan", "AAAA", "aaa", "Jordan", uri);
-        val filepart = MultipartBody.Part.createFormData("image", uri.path,
-            uri.asRequestBody("image/*".toMediaTypeOrNull()
-            ));
+        //val filepart = MultipartBody.Part.createFormData("image", uri.path,
+         //   uri.asRequestBody("image/*".toMediaTypeOrNull()
+          //  ));
         val title =   MultipartBody.Part.createFormData("title", libro.title);
         val description =   MultipartBody.Part.createFormData("description", libro.description)
         val tags =   MultipartBody.Part.createFormData("tags", libro.tags)
         val authors =   MultipartBody.Part.createFormData("authors", libro.authors)
-        val call = api.uploadBook(authToken,filepart, title, description, tags, authors);
+        val call = api.uploadBook(authToken,null, title, description, tags, authors);
         val response = call.execute();
 
         assertTrue(response.isSuccessful);

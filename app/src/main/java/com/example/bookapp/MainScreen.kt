@@ -16,7 +16,7 @@ import com.example.bookapp.login.LoginActivity
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun MainScreen() {
-    val mContext : Context = LocalContext.current;
+    val mContext : Context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

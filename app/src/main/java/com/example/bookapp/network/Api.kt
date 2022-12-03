@@ -10,15 +10,26 @@ interface Api {
     //Login Calls
     @Headers("Content-Type: application/json")
     @POST("user/sign-in")
-    fun LoginUser(@Body body : UserPost) : Call<User>
+    fun loginUser(@Body body : UserLogin) : Call<User>
 
+
+    @POST("user/create")
+    @Multipart
+    fun registerUser(
+        @Part name: MultipartBody.Part,
+        @Part first_ln: MultipartBody.Part,
+        @Part second_ln: MultipartBody.Part,
+        @Part email: MultipartBody.Part,
+        @Part password: MultipartBody.Part,
+        @Part file: MultipartBody.Part?
+    ) : Call<User>
 
     //Libros Calls
     @POST("libro/create")
     @Multipart
     fun uploadBook(
-        @Header("Authorization") authToken : String? ,
-        @Part file: MultipartBody.Part,
+        @Header("Authorization") authToken: String?,
+        @Part file: MultipartBody.Part?,
         @Part title: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part tags: MultipartBody.Part,

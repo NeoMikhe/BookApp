@@ -1,9 +1,12 @@
 package com.example.bookapp.login
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookapp.models.User
-import com.example.bookapp.models.UserPost
+import com.example.bookapp.models.UserLogin
 import com.example.bookapp.network.RetrofitClient.getApi
+import com.example.bookapp.register.RegisterActivity
 import com.example.bookapp.ui.theme.BookAppTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,17 +57,17 @@ class LoginActivity : ComponentActivity() {
 
     private var token : String = ""
 
-    private fun handleLogin(user : UserPost) {
+    private fun handleLogin(user : UserLogin) {
         val api = getApi()
-        val call : Call<User> = api.LoginUser(user)
+        val call : Call<User> = api.loginUser(user)
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@LoginActivity, response.body()?.message ?: "Login successful", Toast.LENGTH_LONG).show()
-                    token = response.body()?.user?.token ?: "";
+                    Toast.makeText(this@LoginActivity, response.body()?.message ?: response.body()?.error, Toast.LENGTH_LONG).show()
+                    token = response.body()?.user?.token ?: ""
                 } else {
-                    Toast.makeText(this@LoginActivity, response.body()?.message ?: "Login not successful", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoginActivity, response.body()?.error ?: "Login not successful", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -77,6 +82,8 @@ class LoginActivity : ComponentActivity() {
     @Composable
     @Preview(showBackground = true, showSystemUi = true)
     fun LoginScreen() {
+
+        val mContext : Context = LocalContext.current
 
         Column(horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -114,9 +121,15 @@ class LoginActivity : ComponentActivity() {
 
             )
 
-            OutlinedButton(onClick = { handleLogin(UserPost(emailState.value, passwordState.value)) } ) {
-                Text("Iniciar Sesion")
+            Row( modifier = Modifier.padding(12.dp) ) {
+                OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp), onClick = { mContext.startActivity(Intent(mContext, RegisterActivity::class.java)) }) {
+                    Text("Registrarse")
+                }
 
+                OutlinedButton(onClick = { handleLogin(UserLogin(emailState.value, passwordState.value)) } ) {
+                    Text("Iniciar Sesion")
+
+                }
             }
 
         }
