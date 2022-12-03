@@ -4,9 +4,9 @@ import java.io.File
 
 
 data class User(
-    val user: UserX,
-    val message: String,
-    val error : String
+    val user: UserX?,
+    val message: String?,
+    val error : String?
 )
 
 data class UserX(

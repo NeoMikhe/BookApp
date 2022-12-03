@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -27,15 +24,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
 import com.example.bookapp.models.User
 import com.example.bookapp.models.UserLogin
+import com.example.bookapp.models.UserX
 import com.example.bookapp.network.RetrofitClient.getApi
 import com.example.bookapp.register.RegisterActivity
 import com.example.bookapp.ui.theme.BookAppTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+val Context.DataStore by preferencesDataStore(name = "USER_PREFERENCES")
 
 class LoginActivity : ComponentActivity() {
 
@@ -48,14 +55,41 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    LoginScreen()
+                    /*
+                    val textoNombre = remember {
+                        mutableStateOf("DAWDASDW")
+                    }*/
+                    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        LoginScreen()
+                        //textButton(username = textoNombre.value)
+                    }
 
+                    //Esto trae y convierte de dataStore al usuario y lo pone el nombre en la variable
+                    //textNombre para poder mostrar, Solo demostratuvo
+                    /*
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        getUserProfile().collect {
+                            withContext(Dispatchers.Main) {
+                                textoNombre.value = it.name
+                            }
+                        }
+                    }*/
                 }
             }
         }
     }
 
-    private var token : String = ""
+    /*
+    Esta funcion trae desde cualquier activity al dataStore
+    private fun getUserProfile() = DataStore.data.map {
+        UserX(
+            id = it[intPreferencesKey("id")] ?: 0,
+            name = it[stringPreferencesKey("name")].orEmpty(),
+            email = it[stringPreferencesKey("email")].orEmpty(),
+            role = it[stringPreferencesKey("role")].orEmpty(),
+            token = it[stringPreferencesKey("token")].orEmpty()
+        )
+    }*/
 
     private fun handleLogin(user : UserLogin) {
         val api = getApi()
@@ -65,7 +99,9 @@ class LoginActivity : ComponentActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@LoginActivity, response.body()?.message ?: response.body()?.error, Toast.LENGTH_LONG).show()
-                    token = response.body()?.user?.token ?: ""
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        response.body()?.let { it.user?.let { it1 -> saveUser(it1) } }
+                    }
                 } else {
                     Toast.makeText(this@LoginActivity, response.body()?.error ?: "Login not successful", Toast.LENGTH_LONG).show()
                 }
@@ -78,6 +114,17 @@ class LoginActivity : ComponentActivity() {
         })
 
     }
+
+    suspend fun saveUser(user: UserX) {
+        DataStore.edit {
+            it[stringPreferencesKey("name")] = user.name
+            it[stringPreferencesKey("email")] = user.email
+            it[stringPreferencesKey("token")] = user.token
+            it[intPreferencesKey("id")] = user.id
+            it[stringPreferencesKey("role")] = user.role
+        }
+    }
+
 
     @Composable
     @Preview(showBackground = true, showSystemUi = true)
@@ -121,7 +168,7 @@ class LoginActivity : ComponentActivity() {
 
             )
 
-            Row( modifier = Modifier.padding(12.dp) ) {
+            Row( modifier = Modifier.padding(24.dp) ) {
                 OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp), onClick = { mContext.startActivity(Intent(mContext, RegisterActivity::class.java)) }) {
                     Text("Registrarse")
                 }
@@ -135,6 +182,14 @@ class LoginActivity : ComponentActivity() {
         }
 
     }
+
+    /*
+    @Composable
+    private fun textButton(username: String) {
+        OutlinedButton(onClick = { /*TODO*/ }) {
+            Text(text = username)
+        }
+    }*/
 
 
 }

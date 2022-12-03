@@ -168,12 +168,12 @@ class RegisterActivity : ComponentActivity() {
                         response.body()?.message ?: response.body()?.error,
                         Toast.LENGTH_LONG
                     ).show()
-                    data.value = response.body()!!.user
+                    data.value = response.body()?.user
 
                 } else {
                     Toast.makeText(
                         this@RegisterActivity,
-                        response.body()?.error ?: "Register not successful",
+                        response.body()?.error ?: "Register not successfull",
                         Toast.LENGTH_LONG
                     ).show()
                 }
