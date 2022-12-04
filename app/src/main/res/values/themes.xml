@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.BookApp" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/colorSecundary2</item>
+    <style name="Theme.BookApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary2</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecundary</item>
+        <item name="colorSecondaryVariant">@color/colorSecundary2</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="statusBarBackground">@color/gray</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/gray</item>
+        <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">@color/gray</item>
     </style>
+
 
     <style name="Theme.BookApp.NoActionBar">
         <item name="windowActionBar">false</item>

@@ -11,7 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.bookapp.login.LoginActivity
+import com.example.bookapp.principal.PrincipalActivity
+
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
@@ -28,7 +31,7 @@ fun MainScreen() {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(0.dp, 0.dp, 24.dp, 0.dp)
             ) {
-                OutlinedButton(onClick = { /* Do something! */ }) {
+                OutlinedButton(onClick = { mContext.startActivity(Intent(mContext, PrincipalActivity::class.java)) }) {
                     Text("Pantalla Principal")
                 }
 

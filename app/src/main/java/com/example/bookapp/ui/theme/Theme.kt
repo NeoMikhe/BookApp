@@ -7,9 +7,10 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = colorPrimary,
+    primaryVariant = colorPrimary2,
+    secondary = colorSecondary,
+    surface = graySurface
 )
 
 private val LightColorPalette = lightColors(
@@ -28,7 +29,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun BookAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun BookAppTheme(darkTheme: Boolean = true, content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
