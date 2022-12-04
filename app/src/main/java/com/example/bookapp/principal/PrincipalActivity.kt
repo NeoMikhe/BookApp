@@ -22,6 +22,7 @@ class PrincipalActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun SimpleComposable() {
     val navController = rememberNavController()

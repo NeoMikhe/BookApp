@@ -16,8 +16,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
-            android:name=".ProfileBookActivity"
-            android:exported="false">
+            android:name=".principal.BooksActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BookApp">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".principal.ProfileBookActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BookApp">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

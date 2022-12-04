@@ -19,7 +19,7 @@ fun BottomNavigationBar(
     val currentRoute = currentRoute(navController)
 
     BottomNavigation(
-        backgroundColor = Color(255, 51, 51, 255),
+        backgroundColor = Color(178, 34, 34, 255),
         contentColor = Color.White
     ) {
         items.forEach { screen ->

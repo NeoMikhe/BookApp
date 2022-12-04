@@ -10,8 +10,6 @@ sealed class Destinations(
     val icon: ImageVector
 ) {
     object HomeActivity: Destinations("HomeActivity", "Home", Icons.Filled.Home)
-    object BooksActivity: Destinations("BooksActivity/?newText={newText}", "Books", Icons.Filled.List) {
-        fun createRoute(newText: String) = "BooksActivity/?newText=$newText"
-    }
+    object BooksActivity: Destinations("BooksActivity", "Books", Icons.Filled.List)
     object ProfileActivity: Destinations("ProfileActivity", "Profile", Icons.Filled.Person)
 }
