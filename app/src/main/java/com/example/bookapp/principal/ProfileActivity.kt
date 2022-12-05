@@ -122,7 +122,7 @@ class ProfileActivity : ComponentActivity() {
                 placeholder = painterResource(R.drawable.b1),
                 contentDescription = stringResource(R.string.description),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.clip(CircleShape).defaultMinSize().height(98.dp).width(98.dp).padding(24.dp)
+                modifier = Modifier.clip(CircleShape).defaultMinSize().height(128.dp).width(128.dp).padding(24.dp)
             )
             Column() {
                 Text(text = user.id.toString())

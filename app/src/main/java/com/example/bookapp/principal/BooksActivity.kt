@@ -16,11 +16,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookapp.R
 import com.example.bookapp.books.BookMainActivity
 
 @Composable
+@Preview(showBackground = true, showSystemUi = true)
 fun BooksActivity() {
     val mContext : Context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize().background(color = Color.Black)) {
@@ -45,7 +47,7 @@ fun BooksActivity() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(0.dp, 0.dp, 24.dp, 0.dp)
+                    modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp)
                 ) {
                     OutlinedButton(onClick = {
                         mContext.startActivity(Intent(mContext, BookMainActivity::class.java))

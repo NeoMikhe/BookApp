@@ -25,6 +25,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -45,6 +46,8 @@ import com.example.bookapp.books.data.DataProvider
 import com.example.bookapp.books.resenas.MainResenaActivity
 import com.example.bookapp.books.ui.theme.purple500
 import com.example.bookapp.books.resenas.Resenas
+import com.example.bookapp.ui.theme.colorPrimary
+import com.example.bookapp.ui.theme.colorPrimary2
 
 @Composable
 fun BookScreen(books: Books, onNavIconPressed: () -> Unit = { }) {
@@ -167,13 +170,13 @@ fun BookFab(extended: Boolean, modifier: Modifier = Modifier) {
             .padding()
             .height(48.dp)
             .widthIn(min = 48.dp),
-        backgroundColor = purple500,
+        backgroundColor = colorPrimary2,
         contentColor = Color.White
     ) {
         AnimatingFabContent(
             icon = {
                 Icon(
-                    imageVector = Icons.Outlined.Call,
+                    imageVector = Icons.Outlined.ThumbUp,
                     contentDescription = stringResource(R.string.ver_resena)
                 )
             },

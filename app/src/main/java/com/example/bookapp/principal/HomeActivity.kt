@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookapp.R
 import com.example.bookapp.principal.ui.theme.white
 
 @Composable
+@Preview(showSystemUi = true, showBackground = true)
 fun HomeActivity() {
     Box(modifier = Modifier.fillMaxSize().background(color = Color.Black)) {
         Column(
@@ -32,6 +34,7 @@ fun HomeActivity() {
                 Image(
                     painterResource(id = R.drawable.homeimage),
                     contentDescription = "Welcome image")
+
             }
         }
     }
