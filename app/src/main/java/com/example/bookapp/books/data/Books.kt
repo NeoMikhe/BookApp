@@ -1,4 +1,6 @@
-package com.example.bookapp.principal.data
+package com.example.bookapp.books.data
+
+import java.io.Serializable
 
 data class Books(
     val id: Int,
@@ -6,4 +8,4 @@ data class Books(
     val tags: String,
     val description: String,
     val bookImageId: Int = 0
-)
+) : Serializable

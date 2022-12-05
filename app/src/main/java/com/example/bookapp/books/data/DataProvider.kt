@@ -1,7 +1,6 @@
-package com.example.bookapp.principal.data
+package com.example.bookapp.books.data
 
 import com.example.bookapp.R
-import com.example.bookapp.principal.data.*
 
 object DataProvider {
 

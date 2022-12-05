@@ -1,4 +1,4 @@
-package com.example.bookapp.principal
+package com.example.bookapp.books
 
 import android.content.Context
 import android.content.Intent
@@ -18,7 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.bookapp.principal.data.Books
+import com.example.bookapp.books.data.Books
 
 @Composable
 fun BooksListItem(books: Books){
@@ -41,8 +41,8 @@ fun BooksListItem(books: Books){
             ) {
                 Text(text = books.title, style = typography.h6)
                 OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
-                    onClick = { mContext.startActivity(
-                    Intent(mContext, ProfileBookActivity::class.java)) }) {
+                    onClick = { mContext.startActivity(Intent(mContext, ProfileBookActivity::class.java))
+                    }) {
                     Text("Mirar libro")
                 }
             }
