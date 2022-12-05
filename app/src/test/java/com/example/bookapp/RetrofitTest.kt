@@ -1,5 +1,6 @@
 package com.example.bookapp
 
+import androidx.core.net.toUri
 import com.example.bookapp.models.*
 import com.example.bookapp.network.RetrofitClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -53,9 +54,9 @@ class RetrofitTest {
         val api = RetrofitClient.getApi();
         val uri = File("C:\\Users\\jorda\\AndroidStudioProjects\\appproyectofinal\\app\\src\\test\\java\\mx\\uabcs\\appproyectofinal\\A.jpeg");
         val libro = LibroPost("Jordan", "AAAA", "aaa", "Jordan", uri);
-        //val filepart = MultipartBody.Part.createFormData("image", uri.path,
-         //   uri.asRequestBody("image/*".toMediaTypeOrNull()
-          //  ));
+        val filepart = MultipartBody.Part.createFormData("image", uri.path,
+          uri.asRequestBody("image/*".toMediaTypeOrNull()
+            ));
         val title =   MultipartBody.Part.createFormData("title", libro.title);
         val description =   MultipartBody.Part.createFormData("description", libro.description)
         val tags =   MultipartBody.Part.createFormData("tags", libro.tags)

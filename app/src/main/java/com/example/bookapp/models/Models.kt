@@ -1,4 +1,5 @@
 package com.example.bookapp.models
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import java.io.File
 
@@ -28,7 +29,7 @@ data class UserRegister(
     val second_ln: String,
     val email: String,
     val password: String,
-    val image: File?
+    val image: Uri?
 )
 
 data class LibroPost(
@@ -36,7 +37,7 @@ data class LibroPost(
     val description: String,
     val tags: String,
     val authors: String,
-    val image: File
+    val image: File?
 )
 
 data class Libro(

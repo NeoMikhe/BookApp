@@ -1,11 +1,19 @@
 package com.example.bookapp.register
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.MediaStore.Audio.Media
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toFile
 import androidx.lifecycle.MutableLiveData
 import com.example.bookapp.login.LoginActivity
 import com.example.bookapp.models.User
@@ -35,10 +44,15 @@ import com.example.bookapp.models.UserRegister
 import com.example.bookapp.models.UserX
 import com.example.bookapp.network.RetrofitClient.getApi
 import com.example.bookapp.register.ui.theme.BookAppTheme
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,14 +70,14 @@ class RegisterActivity : ComponentActivity() {
         }
     }
 
-
     @Composable
     @Preview(showBackground = true, showSystemUi = true)
     fun RegisterScreen() {
-
         val mContext : Context = LocalContext.current
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally,
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Registro",
                 style = TextStyle(fontFamily = FontFamily.Monospace,
@@ -85,6 +99,14 @@ class RegisterActivity : ComponentActivity() {
             val nombreState = remember { mutableStateOf("") }
             val pApellidoState = remember { mutableStateOf("") }
             val sApellidoState = remember { mutableStateOf("") }
+            val imageData = remember { mutableStateOf<Uri?>(null) }
+            val launcher =
+                rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+                    if (it != null) {
+                        imageData.value = it
+                    }
+                }
+
             OutlinedTextField(
                 label = { Text(text = "Nombre")},
                 value = nombreState.value,
@@ -120,10 +142,36 @@ class RegisterActivity : ComponentActivity() {
 
             )
 
-            Row( modifier = Modifier.padding(12.dp) ) {
-                OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),onClick = { handleRegister(UserRegister(nombreState.value, pApellidoState.value, sApellidoState.value, emailState.value, passwordState.value, null)) } ) {
-                    Text("Registrarse")
+            Button(onClick = {
+                launcher.launch("image/*")
+            }) {
+                Text(text = "Seleccionar Imagen")
+            }
 
+            val imageMap = remember {
+                mutableStateOf<Uri?>(null)
+            }
+            val image = imageData.value;
+            if(image != null) {
+                imageMap.value = MediaStore.Images.Media.getContentUri("");
+            }
+
+
+
+            Row( modifier = Modifier.padding(12.dp) ) {
+                OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),onClick = {
+                        handleRegister(UserRegister(
+                            nombreState.value,
+                            pApellidoState.value,
+                            sApellidoState.value,
+                            emailState.value,
+                            passwordState.value,
+                            imageData.value
+                        ), mContext
+                        )
+
+                } ) {
+                    Text("Registrarse")
                 }
 
                 OutlinedButton( onClick = { mContext.startActivity(
@@ -135,30 +183,34 @@ class RegisterActivity : ComponentActivity() {
             }
 
 
-
-
-
-
         }
 
     }
 
-    fun handleRegister(userRegister: UserRegister) {
-        val api = getApi()
 
+    fun handleRegister(userRegister: UserRegister, context : Context) {
+
+        val filesDir = applicationContext.filesDir;
+        val file = File(filesDir, "image.png")
+        val inputStream = userRegister.image?.let { context.contentResolver.openInputStream(it) }
+        val outputStream = FileOutputStream(file)
+        inputStream?.copyTo(outputStream)
+
+        val api = getApi()
 
         val name = MultipartBody.Part.createFormData("name", userRegister.name)
         val first_ln = MultipartBody.Part.createFormData("first_ln", userRegister.first_ln)
         val second_ln = MultipartBody.Part.createFormData("second_ln", userRegister.second_ln)
         val email = MultipartBody.Part.createFormData("email", userRegister.email)
         val password = MultipartBody.Part.createFormData("password", userRegister.password)
+        val filePart = MultipartBody.Part.createFormData("avatar", file.path, file.asRequestBody("image/*".toMediaTypeOrNull()))
 
-        var token = ""
+
 
         val data = MutableLiveData<UserX>()
 
 
-        val call: Call<User> = api.registerUser(name, first_ln, second_ln, email, password, null)
+        val call: Call<User> = api.registerUser(name, first_ln, second_ln, email, password, filePart)
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
