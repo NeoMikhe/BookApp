@@ -34,9 +34,6 @@ fun SimpleComposable() {
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController, items = navigationItems) },
-        floatingActionButton = { FloatingActionButton(onClick = {}) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Fab Icon")
-        } },
         isFloatingActionButtonDocked = false,
         floatingActionButtonPosition = FabPosition.End
     ){

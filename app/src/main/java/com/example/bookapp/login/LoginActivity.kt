@@ -143,7 +143,8 @@ class LoginActivity : ComponentActivity() {
         val loginSuccess = remember { MutableLiveData<Boolean>(false) }
         val mContext : Context = LocalContext.current
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Login",
                 style = TextStyle(fontFamily = FontFamily.Monospace,

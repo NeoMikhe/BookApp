@@ -1,5 +1,7 @@
 package com.example.bookapp.books
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -29,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import com.example.bookapp.R
 import com.example.bookapp.books.data.Books
 import com.example.bookapp.books.data.DataProvider
+import com.example.bookapp.books.resenas.MainResenaActivity
 import com.example.bookapp.books.ui.theme.purple500
+import com.example.bookapp.books.resenas.Resenas
 
 @Composable
 fun BookScreen(books: Books, onNavIconPressed: () -> Unit = { }) {
@@ -154,8 +159,9 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
 
 @Composable
 fun BookFab(extended: Boolean, modifier: Modifier = Modifier) {
+    val mContext : Context = LocalContext.current
     FloatingActionButton(
-        onClick = { /* TODO */ },
+        onClick = { mContext.startActivity(Intent(mContext, MainResenaActivity::class.java)) },
         modifier = modifier
             .padding(16.dp)
             .padding()
@@ -168,12 +174,12 @@ fun BookFab(extended: Boolean, modifier: Modifier = Modifier) {
             icon = {
                 Icon(
                     imageVector = Icons.Outlined.Call,
-                    contentDescription = stringResource(R.string.book_me)
+                    contentDescription = stringResource(R.string.ver_resena)
                 )
             },
             text = {
                 Text(
-                    text = stringResource(R.string.book_me),
+                    text = stringResource(R.string.ver_resena),
                 )
             },
             extended = extended
