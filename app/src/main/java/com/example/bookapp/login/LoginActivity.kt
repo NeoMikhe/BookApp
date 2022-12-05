@@ -28,11 +28,13 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.bookapp.models.User
 import com.example.bookapp.models.UserLogin
 import com.example.bookapp.models.UserX
 import com.example.bookapp.network.RetrofitClient.getApi
+import com.example.bookapp.principal.PrincipalActivity
 import com.example.bookapp.register.RegisterActivity
 import com.example.bookapp.ui.theme.BookAppTheme
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 
 val Context.DataStore by preferencesDataStore(name = "USER_PREFERENCES")
@@ -94,6 +97,8 @@ class LoginActivity : ComponentActivity() {
     private fun handleLogin(user : UserLogin) {
         val api = getApi()
         val call : Call<User> = api.loginUser(user)
+        val myintent = Intent(this, PrincipalActivity::class.java)
+
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -102,8 +107,13 @@ class LoginActivity : ComponentActivity() {
                     lifecycleScope.launch(Dispatchers.IO) {
                         response.body()?.let { it.user?.let { it1 -> saveUser(it1) } }
                     }
+                    if (response.body()?.error == null) {
+                        startActivity(myintent)
+                    }
+
                 } else {
                     Toast.makeText(this@LoginActivity, response.body()?.error ?: "Login not successful", Toast.LENGTH_LONG).show()
+
                 }
             }
 
@@ -112,7 +122,6 @@ class LoginActivity : ComponentActivity() {
             }
 
         })
-
     }
 
     suspend fun saveUser(user: UserX) {
@@ -122,6 +131,7 @@ class LoginActivity : ComponentActivity() {
             it[stringPreferencesKey("token")] = user.token
             it[intPreferencesKey("id")] = user.id
             it[stringPreferencesKey("role")] = user.role
+            it[stringPreferencesKey("avatar")] = user.avatar
         }
     }
 
@@ -130,6 +140,7 @@ class LoginActivity : ComponentActivity() {
     @Preview(showBackground = true, showSystemUi = true)
     fun LoginScreen() {
 
+        val loginSuccess = remember { MutableLiveData<Boolean>(false) }
         val mContext : Context = LocalContext.current
 
         Column(horizontalAlignment = Alignment.CenterHorizontally,
@@ -173,7 +184,11 @@ class LoginActivity : ComponentActivity() {
                     Text("Registrarse")
                 }
 
-                OutlinedButton(onClick = { handleLogin(UserLogin(emailState.value, passwordState.value)) } ) {
+                OutlinedButton(onClick = {
+                        handleLogin(
+                            UserLogin(emailState.value, passwordState.value)
+                        );
+                }  ) {
                     Text("Iniciar Sesion")
 
                 }

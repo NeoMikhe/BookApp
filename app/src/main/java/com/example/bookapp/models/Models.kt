@@ -15,7 +15,8 @@ data class UserX(
     val id: Int,
     val name: String,
     val role: String,
-    val token: String
+    val token: String,
+    val avatar: String
 )
 
 data class UserLogin(

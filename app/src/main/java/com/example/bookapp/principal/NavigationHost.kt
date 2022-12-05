@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.bookapp.navigation.AppScreens.SplashScreen.route
 import com.example.bookapp.principal.Destinations.*
 import com.example.bookapp.principal.Destinations.BooksActivity.route
+import com.example.bookapp.principal.Destinations.HomeActivity.route
 
 @Composable
 fun NavigationHost(
@@ -21,8 +22,8 @@ fun NavigationHost(
             BooksActivity()
         }
 
-        composable(ProfileActivity.route) {
-            ProfileActivity()
+        composable("ProfileActivity") {
+            ProfileActivity().ProfileActivityA()
         }
     }
 }

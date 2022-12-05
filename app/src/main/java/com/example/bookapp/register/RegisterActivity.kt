@@ -1,16 +1,11 @@
 package com.example.bookapp.register
-
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Media
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,14 +31,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toFile
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import com.example.bookapp.login.DataStore
 import com.example.bookapp.login.LoginActivity
 import com.example.bookapp.models.User
 import com.example.bookapp.models.UserRegister
 import com.example.bookapp.models.UserX
 import com.example.bookapp.network.RetrofitClient.getApi
+import com.example.bookapp.principal.PrincipalActivity
 import com.example.bookapp.register.ui.theme.BookAppTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -74,8 +76,6 @@ class RegisterActivity : ComponentActivity() {
     @Preview(showBackground = true, showSystemUi = true)
     fun RegisterScreen() {
         val mContext : Context = LocalContext.current
-
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -139,7 +139,6 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = PasswordVisualTransformation()
-
             )
 
             Button(onClick = {
@@ -188,7 +187,7 @@ class RegisterActivity : ComponentActivity() {
     }
 
 
-    fun handleRegister(userRegister: UserRegister, context : Context) {
+    private fun handleRegister(userRegister: UserRegister, context : Context) {
 
         val filesDir = applicationContext.filesDir;
         val file = File(filesDir, "image.png")
@@ -205,10 +204,9 @@ class RegisterActivity : ComponentActivity() {
         val password = MultipartBody.Part.createFormData("password", userRegister.password)
         val filePart = MultipartBody.Part.createFormData("avatar", file.path, file.asRequestBody("image/*".toMediaTypeOrNull()))
 
-
+        val myintent = Intent(this, PrincipalActivity::class.java)
 
         val data = MutableLiveData<UserX>()
-
 
         val call: Call<User> = api.registerUser(name, first_ln, second_ln, email, password, filePart)
 
@@ -220,7 +218,13 @@ class RegisterActivity : ComponentActivity() {
                         response.body()?.message ?: response.body()?.error,
                         Toast.LENGTH_LONG
                     ).show()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        response.body()?.let { it.user?.let { it1 -> saveUser(it1) } }
+                    }
                     data.value = response.body()?.user
+                    if(response.body()?.error == null) {
+                        startActivity(myintent)
+                    }
 
                 } else {
                     Toast.makeText(
@@ -239,7 +243,16 @@ class RegisterActivity : ComponentActivity() {
 
     }
 
-
+    suspend fun saveUser(user: UserX) {
+        DataStore.edit {
+            it[stringPreferencesKey("name")] = user.name
+            it[stringPreferencesKey("email")] = user.email
+            it[stringPreferencesKey("token")] = user.token
+            it[intPreferencesKey("id")] = user.id
+            it[stringPreferencesKey("role")] = user.role
+            it[stringPreferencesKey("avatar")] = user.avatar
+        }
+    }
 
 
 }
