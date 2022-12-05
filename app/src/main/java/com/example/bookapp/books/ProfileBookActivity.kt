@@ -2,12 +2,11 @@ package com.example.bookapp.books
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.material.Text
+import androidx.appcompat.app.AppCompatActivity
 import com.example.bookapp.books.data.Books
-import com.example.bookapp.ui.theme.BookAppTheme
+import com.example.bookapp.books.ui.theme.MyTheme
 
 class ProfileBookActivity : AppCompatActivity() {
 
@@ -18,8 +17,8 @@ class ProfileBookActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BookAppTheme {
-                Text(text = "The ${books.title}")
+            MyTheme {
+                BookScreen(books)
             }
         }
     }

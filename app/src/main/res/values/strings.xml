@@ -21,4 +21,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_register">RegisterActivity</string>
+
+    <string name="tags">Tags</string>
+    <string name="description">Description</string>
+    <string name="book_me">book_me</string>
 </resources>

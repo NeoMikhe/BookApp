@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.bookapp.books.BookMainActivity
+import com.example.bookapp.register.RegisterActivity
 
 @Composable
 fun BooksActivity() {
@@ -18,9 +19,7 @@ fun BooksActivity() {
 
     Row( modifier = Modifier.padding(24.dp) ) {
         OutlinedButton(modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp), onClick = {
-            mContext.startActivity(
-                Intent(mContext, BookMainActivity::class.java)
-            )
+            mContext.startActivity(Intent(mContext, BookMainActivity::class.java))
         }) {
             Text("Ver libros de divulgacion cientifica")
         }
