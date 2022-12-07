@@ -18,6 +18,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".books.comentarios.ComentarioAcitivty"
+            android:exported="false"
+            android:label="@string/title_activity_comentario_acitivty"
+            android:theme="@style/Theme.BookApp">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".books.resenas.MainResenaActivity"
             android:exported="false"
             android:theme="@style/Theme.BookApp">

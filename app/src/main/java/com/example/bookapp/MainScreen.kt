@@ -41,17 +41,6 @@ fun MainScreen() {
         Row(horizontalArrangement = Arrangement.Center ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(0.dp, 0.dp, 24.dp, 0.dp)
-            ) {
-                OutlinedButton(onClick = { mContext.startActivity(Intent(mContext, PrincipalActivity::class.java)) }) {
-                    Text("Pantalla Principal")
-                }
-
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 OutlinedButton(onClick = { mContext.startActivity(Intent(mContext, LoginActivity::class.java)) }) {
