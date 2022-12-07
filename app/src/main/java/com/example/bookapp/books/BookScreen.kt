@@ -199,7 +199,7 @@ private fun ProfileContent(books: Books, containerHeight: Dp) {
 
         // Add a spacer that always shows part (320.dp) of the fields list regardless of the device,
         // in order to always leave some content at the top.
-        Spacer(Modifier.height((containerHeight - 320.dp).coerceAtLeast(0.dp)))
+        Spacer(Modifier.height((containerHeight - 650.dp).coerceAtLeast(0.dp)))
     }
 }
 
