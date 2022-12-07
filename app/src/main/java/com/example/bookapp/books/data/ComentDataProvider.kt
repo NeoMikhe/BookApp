@@ -5,7 +5,7 @@ import com.example.bookapp.models.AllComentario
 
 object ComentDataProvider {
     val comentario = AllComentario(1,
-        "No es cierto es malo",
+        "Es cierto es malo",
         "2022/02/21",
         1,
         "comentario",
@@ -15,14 +15,14 @@ object ComentDataProvider {
     val listaComentarios = mutableListOf(
         comentario,
         AllComentario(1,
-            "No es cierto es malo",
+            "Malisimo el libro",
             "2022/02/21",
             1,
             "comentario",
             1
         ),
         AllComentario(1,
-            "No es cierto es malo",
+            "No es cierto es bueno",
             "2022/02/21",
             1,
             "comentario",
